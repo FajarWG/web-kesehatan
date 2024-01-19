@@ -155,7 +155,7 @@ export default function Navbar({ user }: { user: any }) {
                   )}
                   aria-current={pathname === item.href ? 'page' : undefined}
                 >
-                  {item.name} Test
+                  {item.name}
                 </Disclosure.Button>
               ))}
             </div>

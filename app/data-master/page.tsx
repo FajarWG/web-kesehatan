@@ -3,12 +3,16 @@ import { Card, Metric, Button } from '@tremor/react';
 
 import Search from '../search';
 import UsersTable from '../table';
+import MasterTable from './masterTable';
 
-interface User {
+interface DataMaster {
   id: number;
-  name: string;
-  username: string;
-  email: string;
+  nama_obat: string;
+  pemakaian: string;
+  penerimaan: string;
+  sisa_stok: number;
+  bulan: number;
+  tahun: number;
 }
 
 export default async function IndexPage({
@@ -18,11 +22,11 @@ export default async function IndexPage({
 }) {
   const search = searchParams.q ?? '';
   const result = await sql`
-    SELECT id, name, username, email 
-    FROM users 
-    WHERE name ILIKE ${'%' + search + '%'};
+    SELECT id, nama_obat, pemakaian, penerimaan, sisa_stok, bulan, tahun 
+    FROM transaksi_bulanan
+    WHERE nama_obat ILIKE ${'%' + search + '%'};
   `;
-  const users = result.rows as User[];
+  const data = result.rows as DataMaster[];
 
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
@@ -32,7 +36,7 @@ export default async function IndexPage({
         <Button>Tambah Data</Button>
       </div>
       <Card className="mt-6">
-        <UsersTable users={users} />
+        <MasterTable data={data} />
       </Card>
     </main>
   );
