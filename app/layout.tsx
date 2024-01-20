@@ -30,7 +30,6 @@ export default async function RootLayout({
 }) {
 
   let session = await auth();
-  console.log(session?.user?.name);
 
   return (
     <html lang="en" className="h-full bg-gray-50">

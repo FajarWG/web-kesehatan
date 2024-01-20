@@ -23,7 +23,6 @@ export const {
           id: user.id,
           name: user.username,
           username: user.username,
-          role: user.role,
         }
       },
     }),
