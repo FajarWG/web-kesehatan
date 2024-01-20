@@ -1,6 +1,6 @@
 import { sql } from '@vercel/postgres';
 import { Card, Metric, Button } from '@tremor/react';
-
+ 
 import Search from '../search';
 import UsersTable from '../table';
 import MasterTable from './masterTable';

@@ -7,7 +7,6 @@ interface User {
   id: number;
   name: string;
   username: string;
-  email: string;
 }
 
 export default async function IndexPage({
@@ -17,7 +16,7 @@ export default async function IndexPage({
 }) {
   const search = searchParams.q ?? '';
   const result = await sql`
-    SELECT id, name, username, email 
+    SELECT id, username 
     FROM users 
     WHERE name ILIKE ${'%' + search + '%'};
   `;

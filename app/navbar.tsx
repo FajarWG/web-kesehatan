@@ -3,23 +3,18 @@
 import { Fragment } from 'react';
 import { usePathname } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, ChevronDownIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
-
-const navigation = [
-  { name: 'Beranda', href: '/' },
-  { name: 'Data Master', href: '/data-master' },
-  { name: 'Data Transaksi', href: '/data-transaksi' },
-  { name: 'Hasil Pengadaan', href: '/hasil-pengadaan' },
-  // { name: 'Playground', href: '/playground' }
-];
+import Link from 'next/link';
+import { Subtitle, Title } from '@tremor/react';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Navbar({ user }: { user: any }) {
+export default function Navbar({ user, navigation }: { user: any, navigation: any }) {
+  
   const pathname = usePathname();
 
   return (
@@ -53,7 +48,7 @@ export default function Navbar({ user }: { user: any }) {
                   </svg>
                 </div>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-                  {navigation.map((item) => (
+                  {navigation.map((item:any) => (
                     <a
                       key={item.name}
                       href={item.href}
@@ -73,14 +68,19 @@ export default function Navbar({ user }: { user: any }) {
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
                 <Menu as="div" className="relative ml-3">
                   <div>
-                    <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
+                    <Menu.Button className="flex rounded-lg px-3 py-2 bg-slate-100 items-center text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
                       <span className="sr-only">Open user menu</span>
                       <Image
-                        className="h-8 w-8 rounded-full"
+                        className="h-4 w-4 rounded-full"
                         src={user?.image || 'https://avatar.vercel.sh/leerob'}
                         height={32}
                         width={32}
                         alt={`${user?.name || 'placeholder'} avatar`}
+                      />
+                      <Subtitle className="ml-2 capitalize text-black">{user?.name || 'placeholder'}</Subtitle>
+                      <ChevronDownIcon
+                        className="ml-2 h-5 w-5 text-gray-500"
+                        aria-hidden="true"
                       />
                     </Menu.Button>
                   </div>
@@ -111,15 +111,14 @@ export default function Navbar({ user }: { user: any }) {
                       ) : (
                         <Menu.Item>
                           {({ active }) => (
-                            <button
+                            <Link href="/login"
                               className={classNames(
                                 active ? 'bg-gray-100' : '',
                                 'flex w-full px-4 py-2 text-sm text-gray-700'
                               )}
-                              onClick={() => signIn('github')}
                             >
                               Sign in
-                            </button>
+                            </Link>
                           )}
                         </Menu.Item>
                       )}
@@ -142,7 +141,7 @@ export default function Navbar({ user }: { user: any }) {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 pt-2 pb-3">
-              {navigation.map((item) => (
+              {navigation.map((item:any) => (
                 <Disclosure.Button
                   key={item.name}
                   as="a"
@@ -163,23 +162,9 @@ export default function Navbar({ user }: { user: any }) {
               {user ? (
                 <>
                   <div className="flex items-center px-4">
-                    <div className="flex-shrink-0">
-                      <Image
-                        className="h-8 w-8 rounded-full"
-                        src={user.image}
-                        height={32}
-                        width={32}
-                        alt={`${user.name} avatar`}
-                      />
-                    </div>
-                    <div className="ml-3">
                       <div className="text-base font-medium text-gray-800">
                         {user.name}
                       </div>
-                      <div className="text-sm font-medium text-gray-500">
-                        {user.email}
-                      </div>
-                    </div>
                   </div>
                   <div className="mt-3 space-y-1">
                     <button

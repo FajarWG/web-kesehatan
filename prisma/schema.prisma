@@ -41,11 +41,10 @@ model HasilPengadaan {
 
 model User {
     id            String       @default(cuid()) @id
-    name          String?
     username      String?      @unique
     password      String?
-    email         String?   @unique
+    role          String?     @default("pegawai")
     createdAt     DateTime  @default(now()) @map(name: "created_at")
-    updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+    updatedAt     DateTime  @default(now()) @updatedAt @map(name: "updated_at")
     @@map(name: "users")
 }
