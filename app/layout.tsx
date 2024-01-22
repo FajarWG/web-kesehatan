@@ -4,9 +4,10 @@ import { Analytics } from '@vercel/analytics/react';
 import Nav from './nav';
 import { Suspense } from 'react';
 import { auth } from './auth';
+import { Toaster } from "sonner";
 
 export const metadata = {
-  title: 'Next.js App Router + NextAuth + Tailwind CSS',
+  title: 'Web Kesehatan',
   description:
     'A user admin dashboard configured with Next.js, Postgres, NextAuth, Tailwind CSS, TypeScript, ESLint, and Prettier.'
 };
@@ -34,6 +35,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className="h-full bg-gray-50">
       <body className="h-full">
+        <Toaster richColors />
         {session && <Suspense>
         {session?.user?.name == 'pegawai' ? (
           <Nav navigation={navigationPegawai} />

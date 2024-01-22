@@ -10,17 +10,17 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model TransaksiBulanan {
+model LaporanTransaksi {
     id            String       @default(cuid()) @id
     nama_obat     String?
+    stok_awal    Int?
     pemakaian     Int?
-    penerimaan    Int?
-    sisa_stok     Int?
+    penerimaan   Int?
+    sisa_stok    Int?
+    jumlah_stok  Int?
     bulan         Int?
-    tahun         Int?
-    createdAt     DateTime  @default(now()) @map(name: "created_at")
-    updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-    @@map(name: "transaksi_bulanan")
+    tahun         Int? @default(2022)
+    @@map(name: "laporan_transaksi")
 }
 
 model ObatAlat {
@@ -32,18 +32,20 @@ model ObatAlat {
     @@map(name: "obat_alat")
 }
 
-model HasilPengadaan {
+model Pengadaan {
     id            String       @default(cuid()) @id
-    nama_obat     String?
-    jumlah        Int?
-    @@map(name: "hasil_pengadaan")
+    nilai_mae     Float?
+    nilai_rsquare Float?
+    nilai_rmsp    Float?
+    jml_pengadaan Int?
+    @@map(name: "pengadaan")
 }
 
 model User {
     id            String       @default(cuid()) @id
     username      String?      @unique
     password      String?
-    role          String?     @default("pegawai")
+    jabatan       String?     @default("pegawai")
     createdAt     DateTime  @default(now()) @map(name: "created_at")
     updatedAt     DateTime  @default(now()) @updatedAt @map(name: "updated_at")
     @@map(name: "users")

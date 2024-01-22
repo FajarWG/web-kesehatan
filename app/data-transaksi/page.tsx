@@ -22,9 +22,11 @@ export default async function IndexPage({
   `;
   const users = result.rows as User[];
 
+  
+
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
-      <Metric>Masukkan Data Transaksi Bulanan</Metric>
+      <Metric>Masukkan Data Transaksi bulanan</Metric>
       <div className="flex items-center justify-between mt-4">
         <DateRangePicker enableSelect={false} />
         <Button>Pengadaan</Button>
