@@ -24,8 +24,10 @@ export default async function IndexPage({
   const result = await sql`
     SELECT id, nama_obat, pemakaian, penerimaan, sisa_stok
     FROM laporan_transaksi
-    WHERE nama_obat ILIKE ${'%' + search + '%'};
+    WHERE nama_obat ILIKE ${'%' + search + '%'}
+    LIMIT 10
   `;
+
   const data = result.rows as DataMaster[];
 
   
