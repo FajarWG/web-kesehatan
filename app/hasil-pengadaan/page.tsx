@@ -1,7 +1,7 @@
 import { sql } from '@vercel/postgres';
 import { Card, Metric, Button, DateRangePicker } from '@tremor/react';
 
-import UsersTable from '../table';
+import UsersTable from '../components/table';
 
 interface User {
   id: number;

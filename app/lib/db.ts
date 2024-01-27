@@ -1,8 +1,8 @@
 import { sql } from '@vercel/postgres';
-import { prisma } from '../lib/prisma';
+import { prisma } from '../../lib/prisma';
 import { genSaltSync, hashSync } from 'bcrypt-ts';
-import { dataObat } from '../data_obat';
-import { DataMaster } from './types';
+import { dataObat } from '../../data_obat';
+import { DataMaster } from '../types';
 
 export async function getUser(username: string) {
   return await prisma.user.findUnique({

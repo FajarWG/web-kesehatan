@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { SubmitButton } from '../../submit-button';
-import { createObat } from '../../db';
+import { SubmitButton } from '../../components/submit-button';
+import { createObat } from '../../lib/db';
 import { redirect } from 'next/navigation';
 
 

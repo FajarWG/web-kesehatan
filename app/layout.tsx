@@ -1,9 +1,9 @@
 import './globals.css';
 
 import { Analytics } from '@vercel/analytics/react';
-import Nav from './nav';
+import Nav from './components/nav';
 import { Suspense } from 'react';
-import { auth } from './auth';
+import { auth } from './lib/auth';
 import { Toaster } from "sonner";
 
 export const metadata = {
