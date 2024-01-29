@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import {
     Table,
@@ -11,6 +12,7 @@ import {
     Text
   } from '@tremor/react';
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
   
   interface DataMaster {
     id: number;
@@ -22,7 +24,7 @@ import { redirect } from 'next/navigation';
     tahun: number;
   }
   
-  export default function MasterTable({ data }: { data: DataMaster[] }) {
+  export default function MasterTable({ data, setModal }: { data: DataMaster[], setModal: any }) {
 
   async function deleteData(id: string) {
     await fetch('/api/delete-obat', {
@@ -62,8 +64,15 @@ import { redirect } from 'next/navigation';
                 <Text>{user.sisa_stok}</Text>
               </TableCell>
               <TableCell className='flex gap-2'>
-                <PencilIcon className="w-5 h-5 text-gray-500" />
-                <button onClick={() => deleteData(user.id as unknown as string)}>
+
+                <a href={`/data-master/editData?id=${user.id}`}>
+                  <PencilIcon className="w-5 h-5 text-gray-500" />
+                </a>
+                <button onClick={() => {
+                  deleteData(user.id.toString())
+                  setModal(true)
+                }
+                }>
                 <TrashIcon className="w-5 h-5 text-gray-500" />
 
                 </button>
@@ -71,6 +80,7 @@ import { redirect } from 'next/navigation';
             </TableRow>
           ))}
         </TableBody>
+        
       </Table>
     );
   }

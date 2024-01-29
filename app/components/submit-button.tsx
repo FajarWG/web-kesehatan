@@ -2,13 +2,14 @@
 
 import { useFormStatus } from 'react-dom';
 
-export function SubmitButton({ children }: { children: React.ReactNode }) {
+export function SubmitButton({ children, onClick }: { children: React.ReactNode, onClick?: () => void }) {
   const { pending } = useFormStatus();
 
   return (
     <button
       type={pending ? 'button' : 'submit'}
       aria-disabled={pending}
+      onClick={onClick}
       className="flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none"
     >
       {children}
