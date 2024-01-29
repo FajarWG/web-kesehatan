@@ -15,15 +15,14 @@ export function Form({
           htmlFor="username"
           className="block text-xs text-gray-600 uppercase"
         >
-          username
+          ID Pengguna
         </label>
         <input
           id="username"
           name="username"
           type="username"
-          placeholder="username"
+          placeholder="Masukkan ID"
           autoComplete="username"
-          defaultValue="pegawai"
           required
           className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
         />
@@ -33,14 +32,13 @@ export function Form({
           htmlFor="password"
           className="block text-xs text-gray-600 uppercase"
         >
-          Password
+          Kata Sandi
         </label>
         <input
           id="password"
           name="password"
           type="password"
-          placeholder="password"
-          defaultValue={"pegawai"}
+          placeholder="*******"
           required
           className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
         />

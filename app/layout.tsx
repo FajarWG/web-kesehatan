@@ -14,8 +14,8 @@ export const metadata = {
 
 const navigationPegawai = [
   { name: 'Beranda', href: '/' },
-  { name: 'Data Master', href: '/data-master' },
-  { name: 'Data Transaksi', href: '/data-transaksi' },
+  { name: 'Data Obat', href: '/data-master' },
+  { name: 'Pengadaan', href: '/pengadaan' },
   { name: 'Hasil Pengadaan', href: '/hasil-pengadaan' },
 ];
 
