@@ -3,6 +3,7 @@
 import { SubmitButton } from '../../components/submit-button';
 import { Dialog, Transition } from '@headlessui/react'
 import React,{useState, useEffect, Fragment} from 'react';
+import { useRouter } from 'next/navigation'
 
 
 
@@ -15,6 +16,7 @@ export default function UpdateData(
 ) {
 
   const byId = searchParams.id ?? '';
+  const Router = useRouter()
 
   const [data, setData] = React.useState<any>({});
   let [isOpen, setIsOpen] = useState(false)

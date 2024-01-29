@@ -34,7 +34,6 @@ import Link from 'next/link';
       },
       body: JSON.stringify({ id })
     });
-    redirect('/data-master/')
   }
 
     return (

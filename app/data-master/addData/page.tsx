@@ -4,9 +4,9 @@ import React,{useState, useEffect, Fragment} from 'react';
 import { Card, Metric, Button, Title } from '@tremor/react';
 import { Dialog, Transition } from '@headlessui/react'
  
-import Search from '../components/search';
-import MasterTable from './masterTable';
+import AddTable from '../addTable';
 import Link from 'next/link';
+import { PlusCircleIcon } from '@heroicons/react/24/solid';
 
 
 interface DataMaster {
@@ -19,32 +19,48 @@ interface DataMaster {
   tahun: number;
 }
 
-export default function IndexPage({
-  searchParams
-}: {
-  searchParams: { q: string, id: string };
-}) {
-  const search = searchParams.q ?? '';
-  const [searchDate, setSearchDate] = useState<string>('');
+export default function IndexPage(){
 
-  const [data, setData] = useState<DataMaster[]>([]);
-  let [isOpen, setIsOpen] = useState(false)
-  const [deleted, setDeleted] = useState(false)
+    const [data, setData] = useState<any>([{
+        nama_obat: '',
+        pemakaian: 0,
+        penerimaan: 0,
+        sisa_stok: 0,
+        stok_awal: 0,
+        jumlah_stok: 0,
+        bulan: 0,
+        tahun: 0,
+    }]);
+    let [isOpen, setIsOpen] = useState(false)
+    const [btnSubmit, setBtnSubmit] = useState(true)
+    const [searchDate, setSearchDate] = useState<string>('');
+
+    const onSubmit = async () => {
+        await fetch('/api/add-obat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ data })
+        });
+
+        setIsOpen(true)
+    }
 
 
-  useEffect(() => {
-    fetch(`api/get-obat?search=${search}&searchDate=${searchDate}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data)
-        setDeleted(false)
-      });
-  }, [search, searchDate, deleted ]);
+    useEffect(() => {
+        console.log("dari data", data)
+        setBtnSubmit(false)
+        if(data[0].bulan == 0){
+            setBtnSubmit(true)
+        }
+    },[data])
+
 
   return (
-    <main className="p-4 md:p-10 mx-auto max-w-7xl">
-      <Metric>Data Obat dan Alat Kesehatan </Metric>
-      <div className="flex items-center justify-between">
+    <main className="p-4 md:p-10 mx-auto max-w-7xl flex flex-col">
+      <Metric>Tambahkan Data Obat dan Alat Kesehatan </Metric>
+      <div className="flex items-center justify-between mt-3">
         <div className='flex flex-row items-end gap-5'>
         <input type="month" 
           className="h-10 block rounded-md border border-gray-200 px-5 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -52,21 +68,17 @@ export default function IndexPage({
           spellCheck={false}
           onChange={(e) => setSearchDate(e.target.value)}
           />
-        <Search />
         </div>
-        <Button>
-          <Link href="/data-master/addData">
-            Tambah Data
-          </Link>
-        </Button>
       </div>
-      <Card className="mt-6">
-        <MasterTable data={data} setModal={setIsOpen} />
+      <Card className="mt-3">
+        <AddTable data={data} setModal={setIsOpen} searchDate={searchDate} setTambahData={setData} />
       </Card>
+        <Button className='ml-auto mt-4' disabled={btnSubmit} onClick={onSubmit}>
+            Tambah Data
+        </Button>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={() => {
           setIsOpen(false)
-          setDeleted(true)
         }}>
           <Transition.Child
             as={Fragment}
@@ -100,7 +112,7 @@ export default function IndexPage({
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
-                      Data berhasil dihapus
+                      Data berhasil ditambahkan
                     </p>
                   </div>
 
@@ -110,7 +122,7 @@ export default function IndexPage({
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={() => {
                         setIsOpen(false)
-                        setDeleted(true)
+                        window.location.href = '/data-master/'
                       }}
                     >
                       Oke
