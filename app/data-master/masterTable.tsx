@@ -11,8 +11,6 @@ import {
     TableCell,
     Text
   } from '@tremor/react';
-import { redirect } from 'next/navigation';
-import Link from 'next/link';
   
   interface DataMaster {
     id: number;
@@ -26,7 +24,10 @@ import Link from 'next/link';
   
   export default function MasterTable({ data, setModal }: { data: DataMaster[], setModal: any }) {
 
+  const [isLoading, setIsLoading] = React.useState(false);
+
   async function deleteData(id: string) {
+    setIsLoading(true);
     await fetch('/api/delete-obat', {
       method: 'POST',
       headers: {
@@ -71,7 +72,7 @@ import Link from 'next/link';
                   deleteData(user.id.toString())
                   setModal(true)
                 }
-                }>
+                } disabled={isLoading}>
                 <TrashIcon className="w-5 h-5 text-gray-500" />
 
                 </button>

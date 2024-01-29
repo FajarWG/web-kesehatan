@@ -2,6 +2,7 @@
 
 import { SubmitButton } from '../../components/submit-button';
 import { Dialog, Transition } from '@headlessui/react'
+import { Button } from '@tremor/react';
 import React,{useState, useEffect, Fragment} from 'react';
 
 
@@ -32,7 +33,6 @@ export default function UpdateData(
     body.jumlah_stok = data.jumlah_stok;
     body.stok_awal = data.stok_awal;
 
-
     await fetch('/api/update-obat', {
       method: 'POST',
       headers: {
@@ -40,7 +40,7 @@ export default function UpdateData(
       },
       body: JSON.stringify(body)
     });
-
+    setIsOpen(true)
   }
 
 
@@ -140,7 +140,7 @@ export default function UpdateData(
         />
       </div>
 
-      <SubmitButton onClick={()=>setIsOpen(true)} disabled={loading}>Edit Data</SubmitButton>
+        <Button disabled={loading}>Edit Data</Button>
         </form> 
         <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={()=> {
