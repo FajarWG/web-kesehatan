@@ -2,7 +2,7 @@
 
 import { useFormStatus } from 'react-dom';
 
-export function SubmitButton({ children, onClick }: { children: React.ReactNode, onClick?: () => void }) {
+export function SubmitButton({ children, onClick, disabled }: { children: React.ReactNode, onClick?: () => void, disabled?: boolean }) {
   const { pending } = useFormStatus();
 
   return (
@@ -10,6 +10,7 @@ export function SubmitButton({ children, onClick }: { children: React.ReactNode,
       type={pending ? 'button' : 'submit'}
       aria-disabled={pending}
       onClick={onClick}
+      disabled={disabled || false}
       className="flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none"
     >
       {children}

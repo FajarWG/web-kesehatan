@@ -46,6 +46,7 @@ export default function Navbar({ user, navigation }: { user: any, navigation: an
                       fill="black"
                     />
                   </svg>
+                  <Title className='mx-4 text-xs'>Puskesmas Bagedit</Title>
                 </div>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                   {navigation.map((item:any) => (

@@ -3,7 +3,6 @@
 import { SubmitButton } from '../../components/submit-button';
 import { Dialog, Transition } from '@headlessui/react'
 import React,{useState, useEffect, Fragment} from 'react';
-import { useRouter } from 'next/navigation'
 
 
 
@@ -16,13 +15,14 @@ export default function UpdateData(
 ) {
 
   const byId = searchParams.id ?? '';
-  const Router = useRouter()
 
   const [data, setData] = React.useState<any>({});
-  let [isOpen, setIsOpen] = useState(false)
-
+  const [isOpen, setIsOpen] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (e: any) => {
+    setLoading(true)
+
     e.preventDefault();
     const formData = new FormData(e.target);
     const body = Object.fromEntries(formData);
@@ -32,7 +32,6 @@ export default function UpdateData(
     body.jumlah_stok = data.jumlah_stok;
     body.stok_awal = data.stok_awal;
 
-    console.log(body)
 
     await fetch('/api/update-obat', {
       method: 'POST',
@@ -141,10 +140,13 @@ export default function UpdateData(
         />
       </div>
 
-      <SubmitButton onClick={()=>setIsOpen(true)}>Edit Data</SubmitButton>
+      <SubmitButton onClick={()=>setIsOpen(true)} disabled={loading}>Edit Data</SubmitButton>
         </form> 
         <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={()=> setIsOpen(false)}>
+        <Dialog as="div" className="relative z-10" onClose={()=> {
+          setIsOpen(false)
+          setLoading(false)
+        } }>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -187,6 +189,7 @@ export default function UpdateData(
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={() => {
                         setIsOpen(false)
+                        setLoading(false)
                         window.location.href = '/data-master/'
                       }}
                     >
