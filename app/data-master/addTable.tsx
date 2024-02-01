@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
+import Select from "react-select";
 import { PencilIcon, PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
 import {
     Table,
@@ -9,15 +10,27 @@ import {
     TableHeaderCell,
     TableBody,
     TableCell,
-    Text,
-    TextInput,
     Button,
     NumberInput
   } from '@tremor/react';
+
   
-  export default function AddTable({ data, setModal, searchDate, setTambahData }: { data: any, setModal: any, searchDate: any, setTambahData: any }) {
+  export default function AddTable({ data, namaObat, setModal, searchDate, setTambahData }: { data: any, namaObat: any, setModal: any, searchDate: any, setTambahData: any }) {
 
     const [dataObat, setDataObat] = React.useState<any>(data);
+    const [namaObats, setNamaObats] = React.useState<any>([
+      {
+        nama_obat: 'ADS 0,3 ml',
+      },
+      {
+        nama_obat: 'ADS 3ml',
+      },{
+        nama_obat: 'Alat Suntik Sekali Pakai 10ml'
+      }
+    ]);
+
+    const [namaObatDump, setNamaObatDump] = React.useState<any>(namaObat);
+
 
     const onAddData = () => {
       setDataObat([...dataObat, {
@@ -38,6 +51,12 @@ import {
       setDataObat(newData);
     };
 
+    const filterNamaObat = (value: any) => {
+      let filtered = namaObatDump.filter((item: any) => item.nama_obat.toLowerCase().includes(value.toLowerCase()))
+      filtered = filtered.slice(0, 10)
+      setNamaObats(filtered)
+    }
+
     useEffect(() => {
         const [year, month] = searchDate.split('-');
         if(year === undefined || month === undefined) return;
@@ -53,8 +72,10 @@ import {
     }, [searchDate])
 
     useEffect(() => {
-      console.log(dataObat)
-    },[dataObat])
+      setNamaObatDump(namaObat)
+      setNamaObats(namaObat.slice(0, 10))
+    },[namaObat])
+
 
     return (
       <>
@@ -68,13 +89,18 @@ import {
             <TableHeaderCell>Sisa Stok</TableHeaderCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody >
           {dataObat.map((user: any, index: any) => (
             <TableRow key={index}>
               <TableCell>{index + 1}</TableCell>
-              <TableCell>
-                <TextInput className='' placeholder='Masukkan Nama Obat' 
-                  onValueChange={(value) => handleInputChange(index, 'nama_obat', value)}
+              <TableCell className='relative'>
+                <Select
+                  options={namaObats}
+                  onChange={(value) => handleInputChange(index, 'nama_obat', value)}
+                  getOptionLabel={(option: any) => option.nama_obat}
+                  getOptionValue={(option: any) => option.nama_obat}
+                  placeholder='Masukkan Nama Obat'
+                  onInputChange={(value) => filterNamaObat(value)}
                 />
                 </TableCell>
               <TableCell>

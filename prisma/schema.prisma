@@ -26,7 +26,7 @@ model LaporanTransaksi {
 model ObatAlat {
     id            String       @default(cuid()) @id
     nama_obat     String?
-    jenis_obat    String?
+    jenis_obat    String?    @default("obat")
     createdAt     DateTime  @default(now()) @map(name: "created_at")
     updatedAt     DateTime  @updatedAt @map(name: "updated_at")
     @@map(name: "obat_alat")

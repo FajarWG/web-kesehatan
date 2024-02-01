@@ -1,9 +1,8 @@
 "use client";
 
 import React,{useState, useEffect, Fragment} from 'react';
-import { Card, Metric, Button, Title } from '@tremor/react';
-import { Dialog, Transition } from '@headlessui/react'
- 
+import { Card, Metric, Button } from '@tremor/react';
+import { Dialog, Transition } from '@headlessui/react' 
 import AddTable from '../addTable';
 
 
@@ -29,6 +28,7 @@ export default function IndexPage(){
         bulan: 0,
         tahun: 0,
     }]);
+    const [namaObat, setNamaObat] = useState<any>([]);
     let [isOpen, setIsOpen] = useState(false)
     const [btnSubmit, setBtnSubmit] = useState(true)
     const [searchDate, setSearchDate] = useState<string>('');
@@ -55,6 +55,14 @@ export default function IndexPage(){
         }
     },[data])
 
+    useEffect(() => {
+        fetch('/api/nama-obat')
+        .then(res => res.json())
+        .then(res => {
+            setNamaObat(res)
+        })
+    },[])
+
 
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl flex flex-col">
@@ -70,7 +78,7 @@ export default function IndexPage(){
         </div>
       </div>
       <Card className="mt-3">
-        <AddTable data={data} setModal={setIsOpen} searchDate={searchDate} setTambahData={setData} />
+        <AddTable data={data} namaObat={namaObat} setModal={setIsOpen} searchDate={searchDate} setTambahData={setData} />
       </Card>
         <Button className='ml-auto mt-4' disabled={btnSubmit} onClick={onSubmit} >
             Tambah Data
