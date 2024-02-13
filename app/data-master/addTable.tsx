@@ -17,6 +17,7 @@ import {
   Button,
   NumberInput
 } from '@tremor/react';
+import CreatableSelect from 'react-select/creatable';
 
 export default function AddTable({
   data,
@@ -45,6 +46,15 @@ export default function AddTable({
   ]);
 
   const [namaObatDump, setNamaObatDump] = React.useState<any>(namaObat);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [values, setValue] = React.useState<any>([
+    {
+      nama_obat: ''
+    },
+    {
+      nama_obat: ''
+    }
+  ]);
 
   const onAddData = () => {
     setDataObat([
@@ -60,16 +70,50 @@ export default function AddTable({
         tahun: searchDate === '' ? 0 : parseInt(searchDate.split('-')[0])
       }
     ]);
+    setValue([
+      ...values,
+      {
+        nama_obat: ''
+      }
+    ]);
   };
 
   const handleInputChange = (index: any, field: any, value: any) => {
     const newData = [...dataObat];
     if (field === 'nama_obat') {
-      newData[index][field] = value.nama_obat;
+      if (value?.nama_obat == null) {
+        newData[index][field] = value.value;
+      } else {
+        setIsLoading(true);
+        setTimeout(() => {
+          const newValue = [...values];
+          newValue[index].nama_obat = value.nama_obat;
+          setValue(newValue);
+          console.log(newValue);
+          setIsLoading(false);
+        }, 1000);
+        newData[index][field] = value.nama_obat;
+      }
     } else {
       newData[index][field] = value;
     }
+
     setDataObat(newData);
+  };
+
+  const handleCreate = (index: any, inputValue: string) => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setNamaObats([{ nama_obat: inputValue }, ...namaObats]);
+      setNamaObatDump([{ nama_obat: inputValue }, ...namaObatDump]);
+      setValue({
+        nama_obat: inputValue
+      });
+      setIsLoading(false);
+      handleInputChange(index, 'nama_obat', {
+        nama_obat: inputValue
+      });
+    }, 1000);
   };
 
   const filterNamaObat = (value: any) => {
@@ -118,15 +162,25 @@ export default function AddTable({
             <TableRow key={index}>
               <TableCell>{index + 1}</TableCell>
               <TableCell className="relative">
-                <Select
+                <CreatableSelect
                   options={namaObats}
-                  onChange={(value) =>
-                    handleInputChange(index, 'nama_obat', value)
-                  }
+                  isDisabled={isLoading}
+                  isLoading={isLoading}
+                  onChange={(value) => {
+                    handleInputChange(index, 'nama_obat', value);
+                  }}
                   getOptionLabel={(option: any) => option.nama_obat}
                   getOptionValue={(option: any) => option.nama_obat}
                   placeholder="Masukkan Nama Obat"
-                  onInputChange={(value) => filterNamaObat(value)}
+                  className="text-black"
+                  onInputChange={(value) => {
+                    filterNamaObat(value);
+                  }}
+                  onCreateOption={(value) => {
+                    console.log(value);
+                    handleCreate(index, value);
+                  }}
+                  value={values[index] == '' ? undefined : values[index]}
                 />
               </TableCell>
               <TableCell>
@@ -167,6 +221,7 @@ export default function AddTable({
         <Button
           onClick={() => {
             setTambahData(dataObat);
+            console.log(dataObat);
           }}
         >
           Simpan Data
