@@ -35,6 +35,7 @@ export default function IndexPage({
     fetch(`api/get-obat?search=${search}&searchDate=${searchDate}`)
       .then((res) => res.json())
       .then((data) => {
+        data = data.slice(0, 10);
         setData(data);
         setDeleted(false);
       });
@@ -48,7 +49,6 @@ export default function IndexPage({
           <input
             type="month"
             className="h-10 block rounded-md border border-gray-200 px-5 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            placeholder="Search by name..."
             spellCheck={false}
             onChange={(e) => setSearchDate(e.target.value)}
           />

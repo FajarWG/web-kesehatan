@@ -34,10 +34,14 @@ model ObatAlat {
 
 model Pengadaan {
     id            String       @default(cuid()) @id
+    nama_obat     String?
     nilai_mae     Float?
     nilai_rsquare Float?
     nilai_rmsp    Float?
     jml_pengadaan Int?
+    bulan         Int?
+    tahun         Int? 
+    createdAt     DateTime  @default(now()) @map(name: "created_at")
     @@map(name: "pengadaan")
 }
 
