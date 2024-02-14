@@ -15,7 +15,8 @@ import {
   TableBody,
   TableCell,
   Button,
-  NumberInput
+  NumberInput,
+  TextInput
 } from '@tremor/react';
 import CreatableSelect from 'react-select/creatable';
 
@@ -56,7 +57,22 @@ export default function AddTable({
     }
   ]);
 
+  const [newNamaObat, setNewNamaObat] = React.useState<any>([
+    {
+      select: 'button'
+    },
+    {
+      select: 'button'
+    }
+  ]);
+
   const onAddData = () => {
+    setNewNamaObat([
+      ...newNamaObat,
+      {
+        select: 'button'
+      }
+    ]);
     setDataObat([
       ...dataObat,
       {
@@ -82,16 +98,12 @@ export default function AddTable({
     const newData = [...dataObat];
     if (field === 'nama_obat') {
       if (value?.nama_obat == null) {
-        newData[index][field] = value.value;
+        newData[index][field] = value;
       } else {
-        setIsLoading(true);
-        setTimeout(() => {
-          const newValue = [...values];
-          newValue[index].nama_obat = value.nama_obat;
-          setValue(newValue);
-          console.log(newValue);
-          setIsLoading(false);
-        }, 1000);
+        const newValue = [...values];
+        newValue[index].nama_obat = value.nama_obat;
+        setValue(newValue);
+        console.log(newValue);
         newData[index][field] = value.nama_obat;
       }
     } else {
@@ -99,21 +111,6 @@ export default function AddTable({
     }
 
     setDataObat(newData);
-  };
-
-  const handleCreate = (index: any, inputValue: string) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setNamaObats([{ nama_obat: inputValue }, ...namaObats]);
-      setNamaObatDump([{ nama_obat: inputValue }, ...namaObatDump]);
-      setValue({
-        nama_obat: inputValue
-      });
-      setIsLoading(false);
-      handleInputChange(index, 'nama_obat', {
-        nama_obat: inputValue
-      });
-    }, 1000);
   };
 
   const filterNamaObat = (value: any) => {
@@ -162,26 +159,70 @@ export default function AddTable({
             <TableRow key={index}>
               <TableCell>{index + 1}</TableCell>
               <TableCell className="relative">
-                <CreatableSelect
-                  options={namaObats}
-                  isDisabled={isLoading}
-                  isLoading={isLoading}
-                  onChange={(value) => {
-                    handleInputChange(index, 'nama_obat', value);
-                  }}
-                  getOptionLabel={(option: any) => option.nama_obat}
-                  getOptionValue={(option: any) => option.nama_obat}
-                  placeholder="Masukkan Nama Obat"
-                  className="text-black"
-                  onInputChange={(value) => {
-                    filterNamaObat(value);
-                  }}
-                  onCreateOption={(value) => {
-                    console.log(value);
-                    handleCreate(index, value);
-                  }}
-                  value={values[index] == '' ? undefined : values[index]}
-                />
+                {newNamaObat[index].select == 'button' ? (
+                  <>
+                    <Button
+                      className="mr-2"
+                      onClick={() => {
+                        setNewNamaObat(
+                          newNamaObat.map((item: any, i: any) => {
+                            if (i === index) {
+                              return {
+                                select: 'input'
+                              };
+                            }
+                            return item;
+                          })
+                        );
+                      }}
+                    >
+                      Nama Obat Baru
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setNewNamaObat(
+                          newNamaObat.map((item: any, i: any) => {
+                            if (i === index) {
+                              return {
+                                select: 'select'
+                              };
+                            }
+                            return item;
+                          })
+                        );
+                      }}
+                    >
+                      Nama Obat Lama
+                    </Button>
+                  </>
+                ) : newNamaObat[index].select == 'input' ? (
+                  <TextInput
+                    placeholder="Masukkan Nama Obat"
+                    className="text-black"
+                    onInput={(value) => {
+                      let test = (value.target as HTMLInputElement).value;
+                      handleInputChange(index, 'nama_obat', test);
+                    }}
+                  />
+                ) : newNamaObat[index].select == 'select' ? (
+                  <Select
+                    options={namaObats}
+                    isDisabled={isLoading}
+                    isLoading={isLoading}
+                    onChange={(value) => {
+                      handleInputChange(index, 'nama_obat', value);
+                    }}
+                    getOptionLabel={(option: any) => option.nama_obat}
+                    getOptionValue={(option: any) => option.nama_obat}
+                    placeholder="Masukkan Nama Obat"
+                    className="text-black"
+                    onInputChange={(value) => {
+                      filterNamaObat(value);
+                    }}
+                  />
+                ) : (
+                  ''
+                )}
               </TableCell>
               <TableCell>
                 <NumberInput
