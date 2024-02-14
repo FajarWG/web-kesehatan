@@ -147,7 +147,7 @@ export default function IndexPage({
                       {isLoading ? (
                         'Proses Prediksi...'
                       ) : (
-                        <Link href="/pengadaan">Tutup</Link>
+                        <Link href="/hasil-pengadaan">Tutup</Link>
                       )}
                     </Button>
                   </div>
