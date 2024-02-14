@@ -7,6 +7,22 @@ export async function POST(req: Request) {
   // data [ { id: 1, nama_obat: 'Paracetamol', pemakaian: '100', penerimaan: '50', sisa_stok: 50, bulan: 1, tahun: 2021 } ]
   let dataPredeksi = body;
 
+  const checkData = await prisma.pengadaan.findFirst({
+    where: {
+      bulan: dataPredeksi[0].bulan,
+      tahun: dataPredeksi[0].tahun
+    }
+  });
+
+  if (checkData) {
+    await prisma.pengadaan.deleteMany({
+      where: {
+        bulan: dataPredeksi[0].bulan,
+        tahun: dataPredeksi[0].tahun
+      }
+    });
+  }
+
   const bulan = dataPredeksi[0].bulan;
   const tahun = dataPredeksi[0].tahun;
 
