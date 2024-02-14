@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 export async function GET(req: Request) {
   const hasilPrediksi = await prisma.pengadaan.findMany({
     orderBy: {
-      id: 'desc'
+      createdAt: 'asc'
     },
     take: 1
   });
