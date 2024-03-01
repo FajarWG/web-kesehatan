@@ -73,7 +73,7 @@ export default function MasterTable({
               <a href={`/data-master/editData?id=${user.id}`}>
                 <PencilIcon className="w-5 h-5 text-gray-500" />
               </a>
-              <button
+              {/* <button
                 onClick={() => {
                   deleteData(user.id.toString());
                   setModal(true);
@@ -81,7 +81,7 @@ export default function MasterTable({
                 disabled={isLoading}
               >
                 <TrashIcon className="w-5 h-5 text-gray-500" />
-              </button>
+              </button> */}
             </TableCell>
           </TableRow>
         ))}
